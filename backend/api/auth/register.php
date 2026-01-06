@@ -56,6 +56,7 @@ $user->password = $data->password;
 // Check if email already exists
 if ($user->emailExists()) {
     http_response_code(400);
+    error_log("Email already exists: " . $data->email);
     echo json_encode([
         "success" => false,
         "message" => "Email already registered. Please use a different email."
@@ -66,6 +67,7 @@ if ($user->emailExists()) {
 // Check if contact already exists
 if ($user->contactExists()) {
     http_response_code(400);
+    error_log("Contact already exists: " . $data->contact);
     echo json_encode([
         "success" => false,
         "message" => "Contact number already registered."
@@ -76,6 +78,7 @@ if ($user->contactExists()) {
 // Create the user
 if ($user->create()) {
     http_response_code(201);
+    error_log("User created successfully: " . $user->id);
     echo json_encode([
         "success" => true,
         "message" => "User registered successfully.",
@@ -88,6 +91,7 @@ if ($user->create()) {
     ]);
 } else {
     http_response_code(503);
+    error_log("Failed to create user - Database error");
     echo json_encode([
         "success" => false,
         "message" => "Unable to register user. Please try again."
