@@ -104,88 +104,52 @@ export default function RegisterScreen({ navigation }) {
 
             {/* Form */}
             <View style={styles.formContainer}>
-              {/* Name Fields */}
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Surname</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Surname"
-                  placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  value={formData.surname}
-                  onChangeText={(text) => setFormData({...formData, surname: text})}
-                />
-              </View>
+              {/* Error Message */}
+              {error ? (
+                <View style={styles.errorContainer}>
+                  <Text style={styles.errorText}>{error}</Text>
+                </View>
+              ) : null}
 
+              {/* Name Input */}
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>First Name</Text>
+                <Text style={styles.label}>Full Name</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="First Name"
+                  placeholder="Enter your full name"
                   placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  value={formData.firstName}
-                  onChangeText={(text) => setFormData({...formData, firstName: text})}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Middle Initial</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="M.I."
-                  placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  maxLength={2}
-                  value={formData.middleInitial}
-                  onChangeText={(text) => setFormData({...formData, middleInitial: text})}
-                />
-              </View>
-
-              {/* Message Input */}
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Type a message (optional)"
-                  placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  value={formData.message}
-                  onChangeText={(text) => setFormData({...formData, message: text})}
-                />
-              </View>
-
-              {/* Address Input */}
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Current Address</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Address"
-                  placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  value={formData.address}
-                  onChangeText={(text) => setFormData({...formData, address: text})}
+                  value={formData.name}
+                  onChangeText={(text) => setFormData({...formData, name: text})}
+                  editable={!loading}
                 />
               </View>
 
               {/* Email Input */}
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Personal Email</Text>
+                <Text style={styles.label}>Email</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Email"
+                  placeholder="Enter your email"
                   placeholderTextColor="rgba(255, 255, 255, 0.6)"
                   keyboardType="email-address"
                   autoCapitalize="none"
                   value={formData.email}
                   onChangeText={(text) => setFormData({...formData, email: text})}
+                  editable={!loading}
                 />
               </View>
 
               {/* Contact Input */}
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Telephone Number</Text>
+                <Text style={styles.label}>Contact Number</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Contact"
+                  placeholder="Enter your contact number"
                   placeholderTextColor="rgba(255, 255, 255, 0.6)"
                   keyboardType="phone-pad"
                   value={formData.contact}
                   onChangeText={(text) => setFormData({...formData, contact: text})}
+                  editable={!loading}
                 />
               </View>
 
@@ -194,11 +158,12 @@ export default function RegisterScreen({ navigation }) {
                 <Text style={styles.label}>Password</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Password"
+                  placeholder="Min 6 characters"
                   placeholderTextColor="rgba(255, 255, 255, 0.6)"
                   secureTextEntry
                   value={formData.password}
                   onChangeText={(text) => setFormData({...formData, password: text})}
+                  editable={!loading}
                 />
               </View>
 
@@ -207,21 +172,25 @@ export default function RegisterScreen({ navigation }) {
                 <Text style={styles.label}>Confirm Password</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Confirm Password"
+                  placeholder="Re-enter your password"
                   placeholderTextColor="rgba(255, 255, 255, 0.6)"
                   secureTextEntry
                   value={formData.confirmPassword}
                   onChangeText={(text) => setFormData({...formData, confirmPassword: text})}
+                  editable={!loading}
                 />
               </View>
 
               {/* Submit Button */}
               <TouchableOpacity
-                style={styles.button}
+                style={[styles.button, loading && styles.buttonDisabled]}
                 onPress={handleRegister}
                 activeOpacity={0.8}
+                disabled={loading}
               >
-                <Text style={styles.buttonText}>Click to Register</Text>
+                <Text style={styles.buttonText}>
+                  {loading ? 'Registering...' : 'Register'}
+                </Text>
               </TouchableOpacity>
 
               {/* Sign In Link */}
@@ -247,26 +216,6 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-  },
-  timeContainer: {
-    position: 'absolute',
-    top: 10,
-    left: 20,
-    zIndex: 10,
-  },
-  timeText: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    fontWeight: '500',
-  },
-  bellContainer: {
-    position: 'absolute',
-    top: 10,
-    right: 20,
-    zIndex: 10,
-  },
-  bellIcon: {
-    fontSize: 20,
   },
   keyboardView: {
     flex: 1,
@@ -294,6 +243,20 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
+  },
+  errorContainer: {
+    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(239, 68, 68, 0.5)',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 20,
+  },
+  errorText: {
+    color: '#FFF',
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '500',
   },
   inputContainer: {
     marginBottom: 16,
@@ -336,6 +299,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   signInLink: {
     marginTop: 20,
