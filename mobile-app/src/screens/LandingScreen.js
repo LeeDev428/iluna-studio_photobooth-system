@@ -58,7 +58,7 @@ export default function LandingScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </LinearGradient>
-      </ImageBackground>
+      </View>
     </View>
   );
 }
