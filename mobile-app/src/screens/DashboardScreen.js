@@ -94,20 +94,26 @@ export default function DashboardScreen({ route, navigation }) {
   };
 
   const handleLogout = () => {
+    console.log('Logout button pressed');
     Alert.alert(
       'Logout',
       'Are you sure you want to logout?',
       [
         {
           text: 'Cancel',
+          onPress: () => console.log('Logout cancelled'),
           style: 'cancel'
         },
         {
           text: 'Logout',
-          onPress: () => navigation.replace('Landing'),
+          onPress: () => {
+            console.log('Logging out...');
+            navigation.replace('Landing');
+          },
           style: 'destructive'
         }
-      ]
+      ],
+      { cancelable: false }
     );
   };
 
@@ -137,7 +143,11 @@ export default function DashboardScreen({ route, navigation }) {
         style={styles.gradient}
       >
         {/* Logout Button - Top Right */}
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+        <TouchableOpacity 
+          onPress={handleLogout} 
+          style={styles.logoutButton}
+          activeOpacity={0.7}
+        >
           <Text style={styles.logoutIcon}>⏻</Text>
         </TouchableOpacity>
 
