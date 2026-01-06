@@ -138,7 +138,7 @@ export default function DashboardScreen({ route, navigation }) {
       >
         {/* Logout Button - Top Right */}
         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Text style={styles.logoutIcon}>🚪</Text>
+          <Text style={styles.logoutIcon}>⏻</Text>
         </TouchableOpacity>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
