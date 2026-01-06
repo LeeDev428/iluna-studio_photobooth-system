@@ -23,16 +23,6 @@ export default function LandingScreen({ navigation }) {
           colors={['#0D9488', '#14B8A6']}
           style={styles.overlay}
         >
-          {/* Time display */}
-          <View style={styles.timeContainer}>
-            <Text style={styles.timeText}>9:00</Text>
-          </View>
-
-          {/* Bell icon container */}
-          <View style={styles.bellContainer}>
-            <Text style={styles.bellIcon}>🔔</Text>
-          </View>
-
           {/* Main content */}
           <View style={styles.contentContainer}>
             {/* Logo/Brand text with "ILLUNA STUDIO" watermark effect */}
@@ -75,26 +65,6 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'space-between',
-  },
-  timeContainer: {
-    position: 'absolute',
-    top: 10,
-    left: 20,
-    zIndex: 10,
-  },
-  timeText: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    fontWeight: '500',
-  },
-  bellContainer: {
-    position: 'absolute',
-    top: 10,
-    right: 20,
-    zIndex: 10,
-  },
-  bellIcon: {
-    fontSize: 20,
   },
   contentContainer: {
     flex: 1,
