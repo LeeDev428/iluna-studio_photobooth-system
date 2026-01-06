@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     position: 'absolute',
-    top: 10,
+    top: 45,
     right: 15,
     backgroundColor: 'rgba(239, 68, 68, 0.9)',
     width: 45,
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
   header: {
-    paddingTop: 50,
+    paddingTop: 90,
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
