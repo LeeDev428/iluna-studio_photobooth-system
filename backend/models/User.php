@@ -1,5 +1,5 @@
 <?php
-require_once '../config/database.php';
+// No need to require database.php here as it's already included in the calling file
 
 class User {
     private $conn;
