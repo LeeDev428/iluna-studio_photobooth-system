@@ -198,6 +198,20 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
   },
+  errorContainer: {
+    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(239, 68, 68, 0.5)',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 20,
+  },
+  errorText: {
+    color: '#FFF',
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '500',
+  },
   inputContainer: {
     marginBottom: 20,
   },
@@ -239,6 +253,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   registerLink: {
     marginTop: 20,
