@@ -22,6 +22,9 @@ $user = new User($db);
 // Get posted data
 $data = json_decode(file_get_contents("php://input"));
 
+// Log received data for debugging
+error_log("Received registration data: " . print_r($data, true));
+
 // Validate required fields
 if (
     empty($data->name) ||
@@ -30,9 +33,16 @@ if (
     empty($data->password)
 ) {
     http_response_code(400);
+    error_log("Missing fields - Name: " . ($data->name ?? 'empty') . ", Email: " . ($data->email ?? 'empty') . ", Contact: " . ($data->contact ?? 'empty'));
     echo json_encode([
         "success" => false,
-        "message" => "Unable to register. Please fill in all required fields."
+        "message" => "Unable to register. Please fill in all required fields.",
+        "received" => [
+            "name" => isset($data->name) ? "yes" : "no",
+            "email" => isset($data->email) ? "yes" : "no",
+            "contact" => isset($data->contact) ? "yes" : "no",
+            "password" => isset($data->password) ? "yes" : "no"
+        ]
     ]);
     exit();
 }
