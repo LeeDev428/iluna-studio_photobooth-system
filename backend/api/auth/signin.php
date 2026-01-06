@@ -11,11 +11,11 @@ $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // Validate required fields
-if (empty($data->email) || empty($data->contact)) {
+if (empty($data->email) || empty($data->password)) {
     http_response_code(400);
     echo json_encode([
         "success" => false,
-        "message" => "Unable to sign in. Please provide email and contact number."
+        "message" => "Unable to sign in. Please provide email and password."
     ]);
     exit();
 }
@@ -23,29 +23,26 @@ if (empty($data->email) || empty($data->contact)) {
 // Set user property values
 $user->email = $data->email;
 
-// Check if email exists
+// Check if email exists and verify password
 if ($user->emailExists()) {
-    // Verify contact number matches
-    if ($user->contact === $data->contact) {
+    // Verify password
+    if (password_verify($data->password, $user->password)) {
         http_response_code(200);
         echo json_encode([
             "success" => true,
             "message" => "Sign in successful.",
-            "data" => [
+            "user" => [
                 "id" => $user->id,
-                "surname" => $user->surname,
-                "first_name" => $user->first_name,
-                "middle_initial" => $user->middle_initial,
+                "name" => $user->name,
                 "email" => $user->email,
-                "contact" => $user->contact,
-                "address" => $user->address
+                "contact" => $user->contact
             ]
         ]);
     } else {
         http_response_code(401);
         echo json_encode([
             "success" => false,
-            "message" => "Invalid contact number."
+            "message" => "Invalid password."
         ]);
     }
 } else {
