@@ -5,13 +5,9 @@ USE iluna_studio_photobooth;
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    surname VARCHAR(100) NOT NULL,
-    first_name VARCHAR(100) NOT NULL,
-    middle_initial VARCHAR(5),
+    name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    contact VARCHAR(20) NOT NULL,
-    address TEXT,
-    message TEXT,
+    contact VARCHAR(20) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
