@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TouchableOpacity,
   StatusBar,
   Dimensions,
@@ -17,15 +16,11 @@ export default function LandingScreen({ navigation }) {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       
-      {/* Background with overlay */}
-      <ImageBackground
-        source={require('../../assets/landing-bg.jpg')}
-        style={styles.background}
-        resizeMode="cover"
-      >
+      {/* Background with gradient - ImageBackground removed until you add landing-bg.jpg */}
+      <View style={styles.background}>
         {/* Gradient Overlay */}
         <LinearGradient
-          colors={['rgba(13, 148, 136, 0.85)', 'rgba(20, 184, 166, 0.75)']}
+          colors={['#0D9488', '#14B8A6']}
           style={styles.overlay}
         >
           {/* Time display */}
