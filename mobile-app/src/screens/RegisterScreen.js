@@ -76,7 +76,15 @@ export default function RegisterScreen({ navigation }) {
       }
     } catch (error) {
       console.error('Registration error:', error);
-      setError('An error occurred. Please try again.');
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else if (error.response) {
+        setError('Unable to register. Please check your information.');
+      } else if (error.request) {
+        setError('Unable to connect to server. Please check your internet connection.');
+      } else {
+        setError('An error occurred. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
