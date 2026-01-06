@@ -8,6 +8,7 @@ import {
   ScrollView,
   Dimensions,
   Alert,
+  Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -95,26 +96,38 @@ export default function DashboardScreen({ route, navigation }) {
 
   const handleLogout = () => {
     console.log('Logout button pressed');
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Logout cancelled'),
-          style: 'cancel'
-        },
-        {
-          text: 'Logout',
-          onPress: () => {
-            console.log('Logging out...');
-            navigation.replace('Landing');
+    
+    // Use window.confirm for web, Alert.alert for native
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm('Are you sure you want to logout?');
+      if (confirmed) {
+        console.log('Logging out...');
+        navigation.replace('Landing');
+      } else {
+        console.log('Logout cancelled');
+      }
+    } else {
+      Alert.alert(
+        'Logout',
+        'Are you sure you want to logout?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Logout cancelled'),
+            style: 'cancel'
           },
-          style: 'destructive'
-        }
-      ],
-      { cancelable: false }
-    );
+          {
+            text: 'Logout',
+            onPress: () => {
+              console.log('Logging out...');
+              navigation.replace('Landing');
+            },
+            style: 'destructive'
+          }
+        ],
+        { cancelable: false }
+      );
+    }
   };
 
   const isDateSelected = (dateInfo) => {
