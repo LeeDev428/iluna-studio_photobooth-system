@@ -11,8 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-require_once '../config/database.php';
-require_once '../models/User.php';
+require_once '../../config/database.php';
+require_once '../../models/User.php';
 
 $database = new Database();
 $db = $database->getConnection();
