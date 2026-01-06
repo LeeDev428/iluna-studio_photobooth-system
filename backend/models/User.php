@@ -6,13 +6,9 @@ class User {
     private $table_name = "users";
 
     public $id;
-    public $surname;
-    public $first_name;
-    public $middle_initial;
+    public $name;
     public $email;
     public $contact;
-    public $address;
-    public $message;
     public $password;
 
     public function __construct($db) {
@@ -22,35 +18,23 @@ class User {
     public function create() {
         $query = "INSERT INTO " . $this->table_name . "
                 SET
-                    surname = :surname,
-                    first_name = :first_name,
-                    middle_initial = :middle_initial,
+                    name = :name,
                     email = :email,
                     contact = :contact,
-                    address = :address,
-                    message = :message,
                     password = :password";
 
         $stmt = $this->conn->prepare($query);
 
         // Sanitize
-        $this->surname = htmlspecialchars(strip_tags($this->surname));
-        $this->first_name = htmlspecialchars(strip_tags($this->first_name));
-        $this->middle_initial = htmlspecialchars(strip_tags($this->middle_initial));
+        $this->name = htmlspecialchars(strip_tags($this->name));
         $this->email = htmlspecialchars(strip_tags($this->email));
         $this->contact = htmlspecialchars(strip_tags($this->contact));
-        $this->address = htmlspecialchars(strip_tags($this->address));
-        $this->message = htmlspecialchars(strip_tags($this->message));
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
 
         // Bind values
-        $stmt->bindParam(":surname", $this->surname);
-        $stmt->bindParam(":first_name", $this->first_name);
-        $stmt->bindParam(":middle_initial", $this->middle_initial);
+        $stmt->bindParam(":name", $this->name);
         $stmt->bindParam(":email", $this->email);
         $stmt->bindParam(":contact", $this->contact);
-        $stmt->bindParam(":address", $this->address);
-        $stmt->bindParam(":message", $this->message);
         $stmt->bindParam(":password", $this->password);
 
         if ($stmt->execute()) {
@@ -62,7 +46,7 @@ class User {
     }
 
     public function emailExists() {
-        $query = "SELECT id, surname, first_name, middle_initial, email, contact, address, password
+        $query = "SELECT id, name, email, contact, password
                 FROM " . $this->table_name . "
                 WHERE email = :email
                 LIMIT 0,1";
@@ -76,11 +60,8 @@ class User {
         if ($num > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->id = $row['id'];
-            $this->surname = $row['surname'];
-            $this->first_name = $row['first_name'];
-            $this->middle_initial = $row['middle_initial'];
+            $this->name = $row['name'];
             $this->contact = $row['contact'];
-            $this->address = $row['address'];
             $this->password = $row['password'];
             return true;
         }
@@ -101,7 +82,7 @@ class User {
     }
 
     public function getUserById() {
-        $query = "SELECT id, surname, first_name, middle_initial, email, contact, address, created_at
+        $query = "SELECT id, name, email, contact, created_at
                 FROM " . $this->table_name . "
                 WHERE id = :id
                 LIMIT 0,1";
@@ -113,12 +94,9 @@ class User {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            $this->surname = $row['surname'];
-            $this->first_name = $row['first_name'];
-            $this->middle_initial = $row['middle_initial'];
+            $this->name = $row['name'];
             $this->email = $row['email'];
             $this->contact = $row['contact'];
-            $this->address = $row['address'];
             return true;
         }
 
