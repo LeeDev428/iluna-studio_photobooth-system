@@ -23,6 +23,8 @@ export default function RegisterScreen({ navigation }) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleRegister = async () => {
     try {
@@ -156,29 +158,45 @@ export default function RegisterScreen({ navigation }) {
               {/* Password Input */}
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Password</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Min 6 characters"
-                  placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  secureTextEntry
-                  value={formData.password}
-                  onChangeText={(text) => setFormData({...formData, password: text})}
-                  editable={!loading}
-                />
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={styles.passwordInput}
+                    placeholder="Min 6 characters"
+                    placeholderTextColor="rgba(255, 255, 255, 0.6)"
+                    secureTextEntry={!showPassword}
+                    value={formData.password}
+                    onChangeText={(text) => setFormData({...formData, password: text})}
+                    editable={!loading}
+                  />
+                  <TouchableOpacity
+                    style={styles.eyeIcon}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <Text style={styles.eyeIconText}>{showPassword ? '👁️' : '👁️‍🗨️'}</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
 
               {/* Confirm Password Input */}
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Confirm Password</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Re-enter your password"
-                  placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  secureTextEntry
-                  value={formData.confirmPassword}
-                  onChangeText={(text) => setFormData({...formData, confirmPassword: text})}
-                  editable={!loading}
-                />
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={styles.passwordInput}
+                    placeholder="Re-enter your password"
+                    placeholderTextColor="rgba(255, 255, 255, 0.6)"
+                    secureTextEntry={!showConfirmPassword}
+                    value={formData.confirmPassword}
+                    onChangeText={(text) => setFormData({...formData, confirmPassword: text})}
+                    editable={!loading}
+                  />
+                  <TouchableOpacity
+                    style={styles.eyeIcon}
+                    onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    <Text style={styles.eyeIconText}>{showConfirmPassword ? '👁️' : '👁️‍🗨️'}</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
 
               {/* Submit Button */}
@@ -277,6 +295,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     fontSize: 16,
     color: '#FFFFFF',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
+    borderRadius: 25,
+    paddingRight: 15,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    color: '#FFFFFF',
+  },
+  eyeIcon: {
+    padding: 8,
+  },
+  eyeIconText: {
+    fontSize: 20,
   },
   button: {
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
