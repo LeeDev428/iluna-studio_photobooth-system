@@ -15,41 +15,68 @@ import api from '../config/api';
 
 export default function RegisterScreen({ navigation }) {
   const [formData, setFormData] = useState({
-    surname: '',
-    firstName: '',
-    middleInitial: '',
-    message: '',
-    address: '',
+    name: '',
     email: '',
     contact: '',
     password: '',
     confirmPassword: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleRegister = async () => {
     try {
-      // Validate fields
-      if (!formData.surname || !formData.firstName || !formData.email || !formData.contact || !formData.password) {
-        alert('Please fill in all required fields');
+      setError('');
+      
+      // Validate all fields
+      if (!formData.name || !formData.email || !formData.contact || !formData.password || !formData.confirmPassword) {
+        setError('Please fill in all fields');
+        return;
+      }
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        setError('Please enter a valid email address');
+        return;
+      }
+
+      // Contact validation (basic)
+      if (formData.contact.length < 10) {
+        setError('Please enter a valid contact number (at least 10 digits)');
+        return;
+      }
+
+      // Password validation
+      if (formData.password.length < 6) {
+        setError('Password must be at least 6 characters long');
         return;
       }
 
       if (formData.password !== formData.confirmPassword) {
-        alert('Passwords do not match');
+        setError('Passwords do not match');
         return;
       }
 
-      const response = await api.post('/auth/register.php', formData);
+      setLoading(true);
+      const response = await api.post('/auth/register.php', {
+        name: formData.name,
+        email: formData.email,
+        contact: formData.contact,
+        password: formData.password,
+      });
       
       if (response.data.success) {
-        alert('Registration successful! Please sign in.');
-        navigation.navigate('SignIn');
+        // Navigate directly to dashboard after successful registration
+        navigation.replace('Dashboard', { user: response.data.user });
       } else {
-        alert(response.data.message || 'Registration failed');
+        setError(response.data.message || 'Registration failed');
       }
     } catch (error) {
       console.error('Registration error:', error);
-      alert('An error occurred. Please try again.');
+      setError('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,16 +88,6 @@ export default function RegisterScreen({ navigation }) {
         colors={['#0D9488', '#14B8A6', '#0D9488']}
         style={styles.gradient}
       >
-        {/* Time display */}
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeText}>9:00</Text>
-        </View>
-
-        {/* Bell icon */}
-        <View style={styles.bellContainer}>
-          <Text style={styles.bellIcon}>🔔</Text>
-        </View>
-
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardView}
