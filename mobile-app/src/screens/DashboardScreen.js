@@ -136,15 +136,15 @@ export default function DashboardScreen({ route, navigation }) {
         colors={['#0D9488', '#14B8A6']}
         style={styles.gradient}
       >
+        {/* Logout Button - Top Right */}
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Text style={styles.logoutIcon}>🚪</Text>
+        </TouchableOpacity>
+
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Calendar Booking</Text>
-            
-            {/* Logout Button */}
-            <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-              <Text style={styles.logoutText}>Logout</Text>
-            </TouchableOpacity>
             
             {/* Month Navigation */}
             <View style={styles.monthNavigation}>
@@ -258,6 +258,31 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  logoutButton: {
+    position: 'absolute',
+    top: 10,
+    right: 15,
+    backgroundColor: 'rgba(239, 68, 68, 0.9)',
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    zIndex: 1000,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  logoutIcon: {
+    fontSize: 22,
+  },
   header: {
     paddingTop: 50,
     paddingHorizontal: 20,
@@ -265,20 +290,28 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     position: 'absolute',
-    top: 50,
-    right: 20,
+    top: 10,
+    right: 15,
     backgroundColor: 'rgba(239, 68, 68, 0.9)',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
-    zIndex: 10,
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    zIndex: 1000,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
-  logoutText: {
-    color: '#FFF',
-    fontSize: 14,
-    fontWeight: '600',
+  logoutIcon: {
+    fontSize: 22,
   },
   headerTitle: {
     fontSize: 28,
