@@ -93,6 +93,24 @@ export default function DashboardScreen({ route, navigation }) {
     );
   };
 
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'Logout',
+          onPress: () => navigation.replace('Landing'),
+          style: 'destructive'
+        }
+      ]
+    );
+  };
+
   const isDateSelected = (dateInfo) => {
     if (!selectedDate || !dateInfo.date) return false;
     return selectedDate.toDateString() === dateInfo.date.toDateString();
@@ -122,6 +140,11 @@ export default function DashboardScreen({ route, navigation }) {
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Calendar Booking</Text>
+            
+            {/* Logout Button */}
+            <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+              <Text style={styles.logoutText}>Logout</Text>
+            </TouchableOpacity>
             
             {/* Month Navigation */}
             <View style={styles.monthNavigation}>
@@ -239,6 +262,23 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 20,
     paddingBottom: 20,
+  },
+  logoutButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    backgroundColor: 'rgba(239, 68, 68, 0.9)',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.5)',
+    zIndex: 10,
+  },
+  logoutText: {
+    color: '#FFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
   headerTitle: {
     fontSize: 28,
