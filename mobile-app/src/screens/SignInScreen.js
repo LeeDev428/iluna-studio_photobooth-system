@@ -15,32 +15,43 @@ import api from '../config/api';
 
 export default function SignInScreen({ navigation }) {
   const [formData, setFormData] = useState({
-    fullName: '',
-    message: '',
-    address: '',
     email: '',
-    contact: '',
+    password: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSignIn = async () => {
     try {
+      setError('');
+      
       // Validate fields
-      if (!formData.email || !formData.contact) {
-        alert('Please fill in all required fields');
+      if (!formData.email || !formData.password) {
+        setError('Please fill in all fields');
         return;
       }
 
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        setError('Please enter a valid email address');
+        return;
+      }
+
+      setLoading(true);
       const response = await api.post('/auth/signin.php', formData);
       
       if (response.data.success) {
-        // Navigate to main app or show success
-        alert('Sign in successful!');
+        // Navigate to dashboard
+        navigation.replace('Dashboard', { user: response.data.user });
       } else {
-        alert(response.data.message || 'Sign in failed');
+        setError(response.data.message || 'Sign in failed');
       }
     } catch (error) {
       console.error('Sign in error:', error);
-      alert('An error occurred. Please try again.');
+      setError('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,16 +63,6 @@ export default function SignInScreen({ navigation }) {
         colors={['#0D9488', '#14B8A6', '#0D9488']}
         style={styles.gradient}
       >
-        {/* Time display */}
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeText}>9:00</Text>
-        </View>
-
-        {/* Bell icon */}
-        <View style={styles.bellContainer}>
-          <Text style={styles.bellIcon}>🔔</Text>
-        </View>
-
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardView}
@@ -73,68 +74,57 @@ export default function SignInScreen({ navigation }) {
             {/* Header */}
             <View style={styles.headerContainer}>
               <Text style={styles.headerTitle}>Sign In</Text>
-              <Text style={styles.headerSubtitle}>Surname, First name, M.I.</Text>
+              <Text style={styles.headerSubtitle}>Welcome back!</Text>
             </View>
+
+            {/* Error Message */}
+            {error ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+            ) : null}
 
             {/* Form */}
             <View style={styles.formContainer}>
-              {/* Message Input */}
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Type a message"
-                  placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  value={formData.message}
-                  onChangeText={(text) => setFormData({...formData, message: text})}
-                />
-              </View>
-
-              {/* Address Input */}
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Current Address</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Address"
-                  placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  value={formData.address}
-                  onChangeText={(text) => setFormData({...formData, address: text})}
-                />
-              </View>
-
               {/* Email Input */}
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Personal Email</Text>
+                <Text style={styles.label}>Email</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Email"
+                  placeholder="Enter your email"
                   placeholderTextColor="rgba(255, 255, 255, 0.6)"
                   keyboardType="email-address"
                   autoCapitalize="none"
                   value={formData.email}
                   onChangeText={(text) => setFormData({...formData, email: text})}
+                  editable={!loading}
                 />
               </View>
 
-              {/* Contact Input */}
+              {/* Password Input */}
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Telephone Number</Text>
+                <Text style={styles.label}>Password</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Contact"
+                  placeholder="Enter your password"
                   placeholderTextColor="rgba(255, 255, 255, 0.6)"
-                  keyboardType="phone-pad"
-                  value={formData.contact}
-                  onChangeText={(text) => setFormData({...formData, contact: text})}
+                  secureTextEntry
+                  value={formData.password}
+                  onChangeText={(text) => setFormData({...formData, password: text})}
+                  editable={!loading}
                 />
               </View>
 
               {/* Submit Button */}
               <TouchableOpacity
-                style={styles.button}
+                style={[styles.button, loading && styles.buttonDisabled]}
                 onPress={handleSignIn}
                 activeOpacity={0.8}
+                disabled={loading}
               >
-                <Text style={styles.buttonText}>Click to Proceed</Text>
+                <Text style={styles.buttonText}>
+                  {loading ? 'Signing in...' : 'Sign In'}
+                </Text>
               </TouchableOpacity>
 
               {/* Register Link */}
