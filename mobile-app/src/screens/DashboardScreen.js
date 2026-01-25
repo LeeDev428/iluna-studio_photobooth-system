@@ -250,7 +250,7 @@ export default function DashboardScreen({ route, navigation }) {
               onPress={() => navigation.navigate('ChatBox', { user })}
             >
               <View style={styles.iconContainer}>
-                <Text style={styles.iconText}></Text>
+                <Text style={styles.iconText}>💬</Text>
               </View>
               <Text style={styles.navLabel}>Chat Box</Text>
             </TouchableOpacity>
