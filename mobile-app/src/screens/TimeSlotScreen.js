@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   timeSlotButton: {
-    width: '13%',
+    width: '15.5%',
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
