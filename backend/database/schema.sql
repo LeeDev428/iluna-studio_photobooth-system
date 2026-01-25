@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     booking_day VARCHAR(10) NOT NULL,
     booking_time VARCHAR(20) NOT NULL,
     duration VARCHAR(10) NOT NULL,
+    service_type VARCHAR(50) NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
     status ENUM('pending', 'confirmed', 'cancelled', 'completed') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
