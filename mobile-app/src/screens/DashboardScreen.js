@@ -235,14 +235,20 @@ export default function DashboardScreen({ route, navigation }) {
 
           {/* Bottom Navigation Buttons */}
           <View style={styles.bottomNav}>
-            <TouchableOpacity style={styles.navItem}>
+            <TouchableOpacity 
+              style={styles.navItem}
+              onPress={() => navigation.navigate('Reviews', { user })}
+            >
               <View style={styles.iconContainer}>
                 <Text style={styles.iconText}>📝</Text>
               </View>
               <Text style={styles.navLabel}>Reviews in Studio</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.navItem}>
+            <TouchableOpacity 
+              style={styles.navItem}
+              onPress={() => navigation.navigate('ChatBox', { user })}
+            >
               <View style={styles.iconContainer}>
                 <Text style={styles.iconText}></Text>
               </View>
