@@ -14,3 +14,40 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_email (email),
     INDEX idx_contact (contact)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Bookings table
+CREATE TABLE IF NOT EXISTS bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    booking_date DATE NOT NULL,
+    booking_day VARCHAR(10) NOT NULL,
+    booking_time VARCHAR(20) NOT NULL,
+    duration VARCHAR(10) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    status ENUM('pending', 'confirmed', 'cancelled', 'completed') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_user_id (user_id),
+    INDEX idx_booking_date (booking_date),
+    INDEX idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Packages table (for future use)
+CREATE TABLE IF NOT EXISTS packages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    duration INT NOT NULL,
+    features TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Insert sample packages
+INSERT INTO packages (name, description, price, duration, features) VALUES
+('Basic Package', 'Perfect for small events', 5000.00, 3, 'Unlimited prints, Digital copies, Basic props'),
+('Premium Package', 'For special occasions', 8000.00, 5, 'Unlimited prints, Digital copies, Premium props, Custom backdrop'),
+('Deluxe Package', 'Complete photobooth experience', 12000.00, 8, 'Unlimited prints, Digital copies, Premium props, Custom backdrop, Video messages, Guestbook');
