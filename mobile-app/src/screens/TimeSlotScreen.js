@@ -12,11 +12,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TimeSlotScreen({ route, navigation }) {
   const { selectedDate, user, serviceType } = route.params;
-  const [selectedDay, setSelectedDay] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDuration, setSelectedDuration] = useState(null);
 
-  const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THURS', 'FRI', 'SAT'];
+  // Get day of week from selected date
+  const dayOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THURS', 'FRI', 'SAT'][selectedDate.getDay()];
   
   const timeSlots = [
     '9 10 AM', '10 11 AM', '11 12 NN', '12 1 PM', '1-2 PM',
@@ -43,15 +43,15 @@ export default function TimeSlotScreen({ route, navigation }) {
   };
 
   const handleProceedToPayment = () => {
-    if (!selectedDay || !selectedTime || !selectedDuration) {
-      Alert.alert('Incomplete Selection', 'Please select day, time, and duration.');
+    if (!selectedTime || !selectedDuration) {
+      Alert.alert('Incomplete Selection', 'Please select time and duration.');
       return;
     }
 
     // Navigate to Payment Method screen
     navigation.navigate('PaymentMethod', {
       selectedDate,
-      selectedDay,
+      selectedDay: dayOfWeek,
       selectedTime,
       selectedDuration,
       serviceType,
@@ -85,30 +85,7 @@ export default function TimeSlotScreen({ route, navigation }) {
           {/* Selected Date Display */}
           <View style={styles.dateDisplay}>
             <Text style={styles.dateText}>{formatDate(selectedDate)}</Text>
-          </View>
-
-          {/* Week Days Selection */}
-          <View style={styles.sectionContainer}>
-            <View style={styles.weekDaysGrid}>
-              {weekDays.map((day, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.weekDayButton,
-                    selectedDay === day && styles.selectedButton,
-                  ]}
-                  onPress={() => setSelectedDay(day)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={[
-                    styles.weekDayButtonText,
-                    selectedDay === day && styles.selectedButtonText,
-                  ]}>
-                    {day}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+            <Text style={styles.dayText}>Day: {dayOfWeek}</Text>
           </View>
 
           {/* Time Slots Grid */}
@@ -233,6 +210,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#E0E0E0',
     marginBottom: 8,
+  },
+  dayText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    marginTop: 5,
   },
   weekDayButtonText: {
     fontSize: 11,
