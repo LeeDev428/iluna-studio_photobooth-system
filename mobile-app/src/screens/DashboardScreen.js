@@ -85,13 +85,11 @@ export default function DashboardScreen({ route, navigation }) {
     }
     
     setSelectedDate(dateInfo.date);
-    Alert.alert(
-      'Date Selected',
-      `You selected: ${dateInfo.date.toLocaleDateString()}\n\nThis will be used for booking.`,
-      [
-        { text: 'OK', onPress: () => console.log('Selected date:', dateInfo.date) }
-      ]
-    );
+    // Navigate to TimeSlot screen
+    navigation.navigate('TimeSlot', {
+      selectedDate: dateInfo.date,
+      user: user,
+    });
   };
 
   const handleLogout = () => {
@@ -246,14 +244,7 @@ export default function DashboardScreen({ route, navigation }) {
 
             <TouchableOpacity style={styles.navItem}>
               <View style={styles.iconContainer}>
-                <Text style={styles.iconText}>📅</Text>
-              </View>
-              <Text style={styles.navLabel}>Book Now</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.navItem}>
-              <View style={styles.iconContainer}>
-                <Text style={styles.iconText}>💬</Text>
+                <Text style={styles.iconText}></Text>
               </View>
               <Text style={styles.navLabel}>Chat Box</Text>
             </TouchableOpacity>
