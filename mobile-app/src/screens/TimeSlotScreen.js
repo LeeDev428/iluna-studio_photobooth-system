@@ -11,7 +11,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TimeSlotScreen({ route, navigation }) {
-  const { selectedDate, user } = route.params;
+  const { selectedDate, user, serviceType } = route.params;
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDuration, setSelectedDuration] = useState(null);
@@ -23,7 +23,20 @@ export default function TimeSlotScreen({ route, navigation }) {
     '2-3 PM', '3-4 PM', '4-5 PM', '5-6 PM', '6-7 PM', '7-8 PM', '8 PM'
   ];
 
-  const durations = ['10', '20', '30', '1hr'];
+  // Duration based on service type
+  const getDurations = () => {
+    if (serviceType === 'wedding') {
+      return ['8hr'];
+    } else if (serviceType === 'photobooth' || serviceType === 'birthday') {
+      return ['10', '20', '30', '1hr'];
+    } else if (serviceType === 'selfphoto') {
+      // For self photo - different options (you can customize this)
+      return ['30', '1hr'];
+    }
+    return ['10', '20', '30', '1hr'];
+  };
+
+  const durations = getDurations();
 
   const handleBackPress = () => {
     navigation.goBack();
@@ -41,6 +54,7 @@ export default function TimeSlotScreen({ route, navigation }) {
       selectedDay,
       selectedTime,
       selectedDuration,
+      serviceType,
       user,
     });
   };
@@ -54,9 +68,7 @@ export default function TimeSlotScreen({ route, navigation }) {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       
-      <LinearGradient
-        colors={['#4CAF50', '#2196F3']}
-        start={{ x: 0, y: 0 }}
+      <LinearGradie0D9488', '#14B8A6'] }}
         end={{ x: 1, y: 1 }}
         style={styles.gradient}
       >
@@ -178,7 +190,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     backgroundColor: 'rgba(33, 150, 243, 0.8)',
     width: 45,
-    height: 45,
+    height: 45,20, 184, 166, 0.5
     borderRadius: 22.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -255,8 +267,8 @@ const styles = StyleSheet.create({
   selectedButton: {
     backgroundColor: '#2196F3',
     borderColor: '#1976D2',
-  },
-  selectedButtonText: {
+  },0D9488',
+    borderColor: '#0F766E
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
@@ -276,8 +288,8 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
   },
   selectedDurationButton: {
-    backgroundColor: '#4CAF50',
-    borderColor: '#388E3C',
+    backgroundColor: '#14B8A6',
+    borderColor: '#0D9488',
   },
   durationText: {
     fontSize: 16,
@@ -290,13 +302,13 @@ const styles = StyleSheet.create({
   proceedButton: {
     marginHorizontal: 30,
     marginTop: 10,
-    backgroundColor: 'rgba(33, 150, 243, 0.9)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     paddingVertical: 15,
     borderRadius: 25,
     alignItems: 'center',
   },
   proceedButtonText: {
-    color: '#FFFFFF',
+    color: '#0D9488',
     fontSize: 16,
     fontWeight: 'bold',
   },
