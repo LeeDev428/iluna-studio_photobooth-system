@@ -188,9 +188,9 @@ const styles = StyleSheet.create({
     top: 45,
     left: 20,
     zIndex: 10,
-    backgroundColor: 'rgba(33, 150, 243, 0.8)',
+    backgroundColor: 'rgba(20, 184, 166, 0.5)',
     width: 45,
-    height: 45,20, 184, 166, 0.5
+    height: 45,
     borderRadius: 22.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -265,10 +265,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   selectedButton: {
-    backgroundColor: '#2196F3',
-    borderColor: '#1976D2',
-  },0D9488',
-    borderColor: '#0F766E
+    backgroundColor: '#0D9488',
+    borderColor: '#0F766E',
+  },
+  selectedButtonText: {
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
