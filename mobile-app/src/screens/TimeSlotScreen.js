@@ -68,8 +68,8 @@ export default function TimeSlotScreen({ route, navigation }) {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       
-      <LinearGradie0D9488', '#14B8A6'] }}
-        end={{ x: 1, y: 1 }}
+      <LinearGradient
+        colors={['#0D9488', '#14B8A6']}
         style={styles.gradient}
       >
         {/* Back Button */}
