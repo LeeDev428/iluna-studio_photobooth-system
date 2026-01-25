@@ -26,6 +26,7 @@ if (
     empty($data->booking_day) ||
     empty($data->booking_time) ||
     empty($data->duration) ||
+    empty($data->service_type) ||
     empty($data->payment_method)
 ) {
     http_response_code(400);
@@ -75,9 +76,9 @@ try {
 
     // Insert booking
     $query = "INSERT INTO bookings 
-              (user_id, booking_date, booking_day, booking_time, duration, payment_method, status) 
+              (user_id, booking_date, booking_day, booking_time, duration, service_type, payment_method, status) 
               VALUES 
-              (:user_id, :booking_date, :booking_day, :booking_time, :duration, :payment_method, 'pending')";
+              (:user_id, :booking_date, :booking_day, :booking_time, :duration, :service_type, :payment_method, 'pending')";
 
     $stmt = $db->prepare($query);
 
@@ -87,6 +88,7 @@ try {
     $stmt->bindParam(':booking_day', $data->booking_day);
     $stmt->bindParam(':booking_time', $data->booking_time);
     $stmt->bindParam(':duration', $data->duration);
+    $stmt->bindParam(':service_type', $data->service_type);
     $stmt->bindParam(':payment_method', $data->payment_method);
 
     // Execute query
@@ -102,6 +104,7 @@ try {
                 "booking_date" => $data->booking_date,
                 "booking_day" => $data->booking_day,
                 "booking_time" => $data->booking_time,
+                "service_type" => $data->service_type,
                 "duration" => $data->duration,
                 "payment_method" => $data->payment_method,
                 "status" => "pending"
