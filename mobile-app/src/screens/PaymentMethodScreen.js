@@ -56,7 +56,8 @@ export default function PaymentMethodScreen({ route, navigation }) {
 
       console.log('Booking response:', response.data);
 
-      ifconst serviceNames = {
+      if (response.data.success) {
+        const serviceNames = {
           photobooth: 'Photobooth Booking',
           selfphoto: 'Self Photo Booking',
           birthday: 'Birthday Booking',
@@ -65,8 +66,7 @@ export default function PaymentMethodScreen({ route, navigation }) {
         
         Alert.alert(
           'Booking Confirmed! 🎉',
-          `Your booking has been confirmed!\n\nService: ${serviceNames[serviceType]}
-          `Your booking has been confirmed!\n\nDate: ${selectedDate.toLocaleDateString()}\nDay: ${selectedDay}\nTime: ${selectedTime}\nDuration: ${selectedDuration}\nPayment: ${paymentMethods.find(p => p.id === selectedPayment)?.name}\n\nWe'll contact you soon for confirmation.`,
+          `Your booking has been confirmed!\n\nService: ${serviceNames[serviceType]}\nDate: ${selectedDate.toLocaleDateString()}\nDay: ${selectedDay}\nTime: ${selectedTime}\nDuration: ${selectedDuration}\nPayment: ${paymentMethods.find(p => p.id === selectedPayment)?.name}\n\nWe'll contact you soon for confirmation.`,
           [
             {
               text: 'OK',
