@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import api from '../config/api';
 
 export default function PaymentMethodScreen({ route, navigation }) {
-  const { selectedDate, selectedDay, selectedTime, selectedDuration, user } = route.params;
+  const { selectedDate, selectedDay, selectedTime, selectedDuration, serviceType, user } = route.params;
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -44,6 +44,7 @@ export default function PaymentMethodScreen({ route, navigation }) {
         booking_day: selectedDay,
         booking_time: selectedTime,
         duration: selectedDuration,
+        service_type: serviceType,
         payment_method: selectedPayment,
         status: 'pending',
       };
@@ -55,9 +56,16 @@ export default function PaymentMethodScreen({ route, navigation }) {
 
       console.log('Booking response:', response.data);
 
-      if (response.data.success) {
+      ifconst serviceNames = {
+          photobooth: 'Photobooth Booking',
+          selfphoto: 'Self Photo Booking',
+          birthday: 'Birthday Booking',
+          wedding: 'Wedding Booking',
+        };
+        
         Alert.alert(
           'Booking Confirmed! 🎉',
+          `Your booking has been confirmed!\n\nService: ${serviceNames[serviceType]}
           `Your booking has been confirmed!\n\nDate: ${selectedDate.toLocaleDateString()}\nDay: ${selectedDay}\nTime: ${selectedTime}\nDuration: ${selectedDuration}\nPayment: ${paymentMethods.find(p => p.id === selectedPayment)?.name}\n\nWe'll contact you soon for confirmation.`,
           [
             {
@@ -138,7 +146,8 @@ export default function PaymentMethodScreen({ route, navigation }) {
           </View>
 
           <View style={styles.phoneContainer}>
-            <Text style={styles.phoneIcon}>📞</Text>
+            <Text style={styles.phoneIcon}>📞Service: {serviceType === 'photobooth' ? 'Photobooth' : serviceType === 'selfphoto' ? 'Self Photo' : serviceType === 'birthday' ? 'Birthday' : 'Wedding'}</Text>
+            <Text style={styles.summaryText}></Text>
             <Text style={styles.phoneText}>Number: 09239033779</Text>
           </View>
 
