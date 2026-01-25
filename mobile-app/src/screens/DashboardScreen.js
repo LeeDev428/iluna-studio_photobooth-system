@@ -85,8 +85,8 @@ export default function DashboardScreen({ route, navigation }) {
     }
     
     setSelectedDate(dateInfo.date);
-    // Navigate to TimeSlot screen
-    navigation.navigate('TimeSlot', {
+    // Navigate to ServiceSelection screen
+    navigation.navigate('ServiceSelection', {
       selectedDate: dateInfo.date,
       user: user,
     });
