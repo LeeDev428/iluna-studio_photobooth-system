@@ -239,7 +239,7 @@ export default function DashboardScreen({ route, navigation }) {
               <View style={styles.iconContainer}>
                 <Text style={styles.iconText}>📝</Text>
               </View>
-              <Text style={styles.navLabel}>Revie in Studio</Text>
+              <Text style={styles.navLabel}>Reviews in Studio</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.navItem}>
