@@ -37,12 +37,46 @@ export default function PaymentMethodScreen({ route, navigation }) {
     setLoading(true);
 
     try {
+      // Parse the time and calculate minutes from midnight
+      const timeMatch = selectedTime.match(/(\d+):(\d+)\s+(AM|PM)/);
+      if (!timeMatch) {
+        Alert.alert('Error', 'Invalid time format');
+        setLoading(false);
+        return;
+      }
+
+      let hour = parseInt(timeMatch[1]);
+      const minute = parseInt(timeMatch[2]);
+      const period = timeMatch[3];
+
+      // Convert to 24-hour format
+      if (period === 'PM' && hour !== 12) {
+        hour += 12;
+      } else if (period === 'AM' && hour === 12) {
+        hour = 0;
+      }
+
+      const startTimeMinutes = hour * 60 + minute;
+
+      // Calculate duration in minutes
+      let durationMinutes = 0;
+      if (selectedDuration.includes('hr')) {
+        const hours = parseInt(selectedDuration.replace('hr', ''));
+        durationMinutes = hours * 60;
+      } else {
+        durationMinutes = parseInt(selectedDuration);
+      }
+
+      const endTimeMinutes = startTimeMinutes + durationMinutes;
+
       // Format the booking data
       const bookingData = {
         user_id: user.id,
         booking_date: selectedDate.toISOString().split('T')[0], // YYYY-MM-DD
         booking_day: selectedDay,
         booking_time: selectedTime,
+        start_time_minutes: startTimeMinutes,
+        end_time_minutes: endTimeMinutes,
         duration: selectedDuration,
         service_type: serviceType,
         payment_method: selectedPayment,
