@@ -92,7 +92,7 @@ try {
     }
     
     // Check if user has already booked (only one booking allowed per user)
-    $checkQuery = "SELECT COUNT(*) as booking_count FROM bookings WHERE user_id = :user_id AND status != 'cancelled'";
+    $checkQuery = "SELECT COUNT(*) as booking_count FROM bookings WHERE user_id = :user_id";
     $checkStmt = $db->prepare($checkQuery);
     $checkStmt->bindParam(':user_id', $data->user_id);
     $checkStmt->execute();
@@ -110,7 +110,6 @@ try {
     // Check for overlapping bookings using time ranges
     $overlapQuery = "SELECT COUNT(*) as overlap_count FROM bookings 
                      WHERE booking_date = :booking_date 
-                     AND status != 'cancelled'
                      AND (
                          (start_time_minutes < :end_time AND end_time_minutes > :start_time)
                      )";
@@ -132,9 +131,9 @@ try {
 
     // Insert booking with time range
     $query = "INSERT INTO bookings 
-              (user_id, booking_date, booking_day, booking_time, start_time_minutes, end_time_minutes, duration, service_type, payment_method, status) 
+              (user_id, booking_date, booking_day, booking_time, start_time_minutes, end_time_minutes, duration, service_type, payment_method) 
               VALUES 
-              (:user_id, :booking_date, :booking_day, :booking_time, :start_time_minutes, :end_time_minutes, :duration, :service_type, :payment_method, 'pending')";
+              (:user_id, :booking_date, :booking_day, :booking_time, :start_time_minutes, :end_time_minutes, :duration, :service_type, :payment_method)";
 
     $stmt = $db->prepare($query);
 
@@ -164,8 +163,7 @@ try {
                 "booking_time" => $data->booking_time,
                 "service_type" => $data->service_type,
                 "duration" => $data->duration,
-                "payment_method" => $data->payment_method,
-                "status" => "pending"
+                "payment_method" => $data->payment_method
             ]
         ]);
     } else {
