@@ -278,17 +278,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#6B7280',
   },
-  statusBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  statusText: {
-    color: '#FFFFFF',
-    fontSize: 11,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-  },
   cardBody: {
   },
   detailRow: {
