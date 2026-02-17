@@ -29,26 +29,8 @@ try {
     $todayStmt->execute();
     $todayResult = $todayStmt->fetch(PDO::FETCH_ASSOC);
     
-    // Pending bookings
-    $pendingQuery = "SELECT COUNT(*) as pending FROM bookings WHERE status = 'pending'";
-    $pendingStmt = $db->prepare($pendingQuery);
-    $pendingStmt->execute();
-    $pendingResult = $pendingStmt->fetch(PDO::FETCH_ASSOC);
-    
-    // Confirmed bookings
-    $confirmedQuery = "SELECT COUNT(*) as confirmed FROM bookings WHERE status = 'confirmed'";
-    $confirmedStmt = $db->prepare($confirmedQuery);
-    $confirmedStmt->execute();
-    $confirmedResult = $confirmedStmt->fetch(PDO::FETCH_ASSOC);
-    
-    // Completed bookings
-    $completedQuery = "SELECT COUNT(*) as completed FROM bookings WHERE status = 'completed'";
-    $completedStmt = $db->prepare($completedQuery);
-    $completedStmt->execute();
-    $completedResult = $completedStmt->fetch(PDO::FETCH_ASSOC);
-    
-    // Calculate total sales from completed bookings
-    $salesQuery = "SELECT duration FROM bookings WHERE status = 'completed'";
+    // Calculate total sales from all bookings
+    $salesQuery = "SELECT duration FROM bookings";
     $salesStmt = $db->prepare($salesQuery);
     $salesStmt->execute();
     $sales = $salesStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -64,8 +46,7 @@ try {
     
     // This month's sales
     $monthSalesQuery = "SELECT duration FROM bookings 
-                        WHERE status = 'completed' 
-                        AND MONTH(booking_date) = MONTH(CURDATE()) 
+                        WHERE MONTH(booking_date) = MONTH(CURDATE()) 
                         AND YEAR(booking_date) = YEAR(CURDATE())";
     $monthSalesStmt = $db->prepare($monthSalesQuery);
     $monthSalesStmt->execute();
@@ -95,9 +76,6 @@ try {
         "data" => [
             "total_bookings" => (int)$totalResult['total'],
             "today_bookings" => (int)$todayResult['today'],
-            "pending_bookings" => (int)$pendingResult['pending'],
-            "confirmed_bookings" => (int)$confirmedResult['confirmed'],
-            "completed_bookings" => (int)$completedResult['completed'],
             "total_sales" => $totalSales,
             "monthly_sales" => $monthlyTotal,
             "recent_bookings" => $recentBookings
