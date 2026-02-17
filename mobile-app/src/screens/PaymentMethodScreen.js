@@ -121,12 +121,12 @@ export default function PaymentMethodScreen({ route, navigation }) {
           navigation.navigate('Dashboard', { user });
         }, 1500);
       } else {
-        showToast('❌ ' + (response.data.message || 'Unable to create booking. Please try again.'), 'error');
+        showToast(response.data.message || '❌ Unable to create booking. Please try again.', 'error');
       }
     } catch (error) {
       console.error('Booking error:', error);
       showToast(
-        '❌ ' + (error.response?.data?.message || 'Failed to create booking. Please check your connection and try again.'),
+        error.response?.data?.message || '❌ Failed to create booking. Please check your connection and try again.',
         'error'
       );
     } finally {
