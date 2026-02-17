@@ -324,17 +324,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#6B7280',
   },
-  statusBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  statusText: {
-    color: '#FFFFFF',
-    fontSize: 11,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-  },
   cardBody: {
     marginBottom: 15,
   },
@@ -357,30 +346,6 @@ const styles = StyleSheet.create({
     color: '#0D9488',
     fontWeight: 'bold',
     fontSize: 16,
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  actionBtn: {
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  confirmBtn: {
-    backgroundColor: '#10B981',
-  },
-  cancelBtn: {
-    backgroundColor: '#EF4444',
-  },
-  completeBtn: {
-    backgroundColor: '#3B82F6',
-  },
-  actionBtnText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 14,
   },
   spacer: {
     height: 20,
