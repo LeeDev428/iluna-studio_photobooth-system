@@ -22,13 +22,16 @@ export default function PaymentMethodScreen({ route, navigation }) {
 
   useEffect(() => {
     if (toast.visible) {
+      // Different duration for success vs error messages
+      const displayDuration = toast.type === 'error' ? 4000 : 2500;
+      
       Animated.sequence([
         Animated.timing(toastOpacity, {
           toValue: 1,
           duration: 300,
           useNativeDriver: true,
         }),
-        Animated.delay(3000),
+        Animated.delay(displayDuration),
         Animated.timing(toastOpacity, {
           toValue: 0,
           duration: 300,
