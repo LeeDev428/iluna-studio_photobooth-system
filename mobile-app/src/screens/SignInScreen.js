@@ -43,8 +43,13 @@ export default function SignInScreen({ navigation }) {
       const response = await api.post('/auth/signin.php', formData);
       
       if (response.data.success) {
-        // Navigate to dashboard
-        navigation.replace('Dashboard', { user: response.data.user });
+        // Navigate based on user role
+        const user = response.data.user;
+        if (user.role === 'admin') {
+          navigation.replace('AdminDashboard', { user });
+        } else {
+          navigation.replace('Dashboard', { user });
+        }
       } else {
         setError(response.data.message || 'Sign in failed');
       }
