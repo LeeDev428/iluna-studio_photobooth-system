@@ -72,17 +72,23 @@ if (
 }
 
 try {
-    // Calculate start and end time in minutes
-    $startTimeMinutes = parseTimeToMinutes($data->booking_time);
-    $endTimeMinutes = calculateEndTime($startTimeMinutes, $data->duration);
-    
-    if ($startTimeMinutes === null) {
-        http_response_code(400);
-        echo json_encode([
-            "success" => false,
-            "message" => "Invalid time format."
-        ]);
-        exit();
+    // Get time values - either from frontend calculation or parse from time string
+    if (isset($data->start_time_minutes) && isset($data->end_time_minutes)) {
+        $startTimeMinutes = $data->start_time_minutes;
+        $endTimeMinutes = $data->end_time_minutes;
+    } else {
+        // Fallback: Calculate start and end time in minutes (for backward compatibility)
+        $startTimeMinutes = parseTimeToMinutes($data->booking_time);
+        $endTimeMinutes = calculateEndTime($startTimeMinutes, $data->duration);
+        
+        if ($startTimeMinutes === null) {
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "message" => "Invalid time format."
+            ]);
+            exit();
+        }
     }
     
     // Check if user has already booked (only one booking allowed per user)
