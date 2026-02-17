@@ -10,7 +10,9 @@ import TimeSlotScreen from './src/screens/TimeSlotScreen';
 import PaymentMethodScreen from './src/screens/PaymentMethodScreen';
 import ReviewsScreen from './src/screens/ReviewsScreen';
 import ChatBoxScreen from './src/screens/ChatBoxScreen';
-import AdminDashboardScreen from './src/screens/AdminDashboardScreen';
+import AdminHomeScreen from './src/screens/AdminHomeScreen';
+import AdminBookingsScreen from './src/screens/AdminBookingsScreen';
+import AdminHistoryScreen from './src/screens/AdminHistoryScreen';
 import AdminChatScreen from './src/screens/AdminChatScreen';
 
 const Stack = createNativeStackNavigator();
@@ -33,7 +35,9 @@ export default function App() {
         <Stack.Screen name="PaymentMethod" component={PaymentMethodScreen} />
         <Stack.Screen name="Reviews" component={ReviewsScreen} />
         <Stack.Screen name="ChatBox" component={ChatBoxScreen} />
-        <Stack.Screen name="AdminDashboard" component={AdminDashboardScreen} />
+        <Stack.Screen name="AdminHome" component={AdminHomeScreen} />
+        <Stack.Screen name="AdminBookings" component={AdminBookingsScreen} />
+        <Stack.Screen name="AdminHistory" component={AdminHistoryScreen} />
         <Stack.Screen name="AdminChat" component={AdminChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
