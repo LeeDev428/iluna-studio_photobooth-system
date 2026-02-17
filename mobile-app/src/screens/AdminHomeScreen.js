@@ -94,17 +94,6 @@ export default function AdminHomeScreen({ route, navigation }) {
                 </View>
               </View>
 
-              <View style={styles.statsRow}>
-                <View style={[styles.statCard, { backgroundColor: '#EF4444' }]}>
-                  <Text style={styles.statValue}>{stats.pending_bookings}</Text>
-                  <Text style={styles.statLabel}>Pending</Text>
-                </View>
-                <View style={[styles.statCard, { backgroundColor: '#14B8A6' }]}>
-                  <Text style={styles.statValue}>{stats.confirmed_bookings}</Text>
-                  <Text style={styles.statLabel}>Confirmed</Text>
-                </View>
-              </View>
-
               {/* Recent Bookings */}
               <View style={styles.recentSection}>
                 <Text style={styles.sectionTitle}>Recent Bookings</Text>
@@ -117,9 +106,6 @@ export default function AdminHomeScreen({ route, navigation }) {
                     <View key={booking.id} style={styles.bookingCard}>
                       <View style={styles.bookingHeader}>
                         <Text style={styles.bookingName}>{booking.user_name}</Text>
-                        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(booking.status) }]}>
-                          <Text style={styles.statusText}>{booking.status}</Text>
-                        </View>
                       </View>
                       <Text style={styles.bookingDetail}>📅 {booking.booking_date}</Text>
                       <Text style={styles.bookingDetail}>🕐 {booking.booking_time}</Text>
@@ -178,16 +164,6 @@ export default function AdminHomeScreen({ route, navigation }) {
     </View>
   );
 }
-
-const getStatusColor = (status) => {
-  switch(status) {
-    case 'pending': return '#F59E0B';
-    case 'confirmed': return '#10B981';
-    case 'cancelled': return '#EF4444';
-    case 'completed': return '#3B82F6';
-    default: return '#6B7280';
-  }
-};
 
 const styles = StyleSheet.create({
   container: {
