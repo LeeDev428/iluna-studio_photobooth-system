@@ -80,7 +80,6 @@ export default function PaymentMethodScreen({ route, navigation }) {
         duration: selectedDuration,
         service_type: serviceType,
         payment_method: selectedPayment,
-        status: 'pending',
       };
 
       console.log('Booking data:', bookingData);
@@ -100,7 +99,7 @@ export default function PaymentMethodScreen({ route, navigation }) {
         
         Alert.alert(
           'Booking Confirmed! 🎉',
-          `Your booking has been confirmed!\n\nService: ${serviceNames[serviceType]}\nDate: ${selectedDate.toLocaleDateString()}\nDay: ${selectedDay}\nTime: ${selectedTime}\nDuration: ${selectedDuration}\nPayment: ${paymentMethods.find(p => p.id === selectedPayment)?.name}\n\nWe'll contact you soon for confirmation.`,
+          `Your booking has been created successfully!\n\nService: ${serviceNames[serviceType]}\nDate: ${selectedDate.toLocaleDateString()}\nDay: ${selectedDay}\nTime: ${selectedTime}\nDuration: ${selectedDuration}\nPayment: ${paymentMethods.find(p => p.id === selectedPayment)?.name}`,
           [
             {
               text: 'OK',
