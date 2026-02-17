@@ -47,7 +47,8 @@ if ($user->emailExists()) {
                 "id" => $user->id,
                 "name" => $user->name,
                 "email" => $user->email,
-                "contact" => $user->contact
+                "contact" => $user->contact,
+                "role" => $user->role
             ]
         ]);
     } else {
