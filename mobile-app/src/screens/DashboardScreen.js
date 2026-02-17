@@ -84,6 +84,17 @@ export default function DashboardScreen({ route, navigation }) {
       return;
     }
     
+    // Block past dates - only allow today and future
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDay = new Date(dateInfo.date);
+    selectedDay.setHours(0, 0, 0, 0);
+    
+    if (selectedDay < today) {
+      Alert.alert('Invalid Date', 'Cannot book past dates. Please select today or a future date.');
+      return;
+    }
+    
     setSelectedDate(dateInfo.date);
     // Navigate to ServiceSelection screen
     navigation.navigate('ServiceSelection', {
@@ -207,6 +218,15 @@ export default function DashboardScreen({ route, navigation }) {
                   const isSelected = isDateSelected(dateInfo);
                   const isWeekend = isSunday(dayIndex) || isSaturday(dayIndex);
                   
+                  // Check if date is in the past
+                  const isPastDate = dateInfo.isCurrentMonth && (() => {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const cellDate = new Date(dateInfo.date);
+                    cellDate.setHours(0, 0, 0, 0);
+                    return cellDate < today;
+                  })();
+                  
                   return (
                     <TouchableOpacity
                       key={dayIndex}
@@ -214,15 +234,18 @@ export default function DashboardScreen({ route, navigation }) {
                         styles.dayCell,
                         !dateInfo.isCurrentMonth && styles.otherMonthDay,
                         isSelected && styles.selectedDay,
+                        isPastDate && styles.pastDay,
                       ]}
                       onPress={() => handleDatePress(dateInfo)}
                       activeOpacity={0.7}
+                      disabled={isPastDate}
                     >
                       <Text style={[
                         styles.dayText,
                         !dateInfo.isCurrentMonth && styles.otherMonthDayText,
                         isWeekend && dateInfo.isCurrentMonth && styles.weekendText,
                         isSelected && styles.selectedDayText,
+                        isPastDate && styles.pastDayText,
                       ]}>
                         {dateInfo.day}
                       </Text>
@@ -409,6 +432,15 @@ const styles = StyleSheet.create({
   selectedDayText: {
     color: '#FFF',
     fontWeight: '700',
+  },
+  pastDay: {
+    backgroundColor: '#F3F4F6',
+    borderColor: '#D1D5DB',
+    opacity: 0.5,
+  },
+  pastDayText: {
+    color: '#9CA3AF',
+    textDecorationLine: 'line-through',
   },
   bottomNav: {
     flexDirection: 'row',
