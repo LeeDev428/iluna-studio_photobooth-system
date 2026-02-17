@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import api from '../config/api';
@@ -16,6 +17,30 @@ export default function PaymentMethodScreen({ route, navigation }) {
   const { selectedDate, selectedDay, selectedTime, selectedDuration, serviceType, user } = route.params;
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState({ visible: false, message: '', type: 'success' });
+  const toastOpacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (toast.visible) {
+      Animated.sequence([
+        Animated.timing(toastOpacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.delay(3000),
+        Animated.timing(toastOpacity, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start(() => setToast({ ...toast, visible: false }));
+    }
+  }, [toast.visible]);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ visible: true, message, type });
+  };
 
   const paymentMethods = [
     { id: 'gcash', name: 'Gcash', icon: 'G' },
@@ -30,7 +55,7 @@ export default function PaymentMethodScreen({ route, navigation }) {
 
   const handleConfirmBooking = async () => {
     if (!selectedPayment) {
-      Alert.alert('No Payment Method', 'Please select a payment method.');
+      showToast('⚠️ Please select a payment method', 'error');
       return;
     }
 
@@ -40,7 +65,7 @@ export default function PaymentMethodScreen({ route, navigation }) {
       // Parse the time and calculate minutes from midnight
       const timeMatch = selectedTime.match(/(\d+):(\d+)\s+(AM|PM)/);
       if (!timeMatch) {
-        Alert.alert('Error', 'Invalid time format');
+        showToast('❌ Invalid time format', 'error');
         setLoading(false);
         return;
       }
@@ -90,34 +115,19 @@ export default function PaymentMethodScreen({ route, navigation }) {
       console.log('Booking response:', response.data);
 
       if (response.data.success) {
-        const serviceNames = {
-          photobooth: 'Photobooth Booking',
-          selfphoto: 'Self Photo Booking',
-          birthday: 'Birthday Booking',
-          wedding: 'Wedding Booking',
-        };
-        
-        Alert.alert(
-          'Booking Confirmed! 🎉',
-          `Your booking has been created successfully!\n\nService: ${serviceNames[serviceType]}\nDate: ${selectedDate.toLocaleDateString()}\nDay: ${selectedDay}\nTime: ${selectedTime}\nDuration: ${selectedDuration}\nPayment: ${paymentMethods.find(p => p.id === selectedPayment)?.name}`,
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                // Navigate back to dashboard
-                navigation.navigate('Dashboard', { user });
-              },
-            },
-          ]
-        );
+        showToast('✅ Booking created successfully!', 'success');
+        // Navigate back to dashboard after toast
+        setTimeout(() => {
+          navigation.navigate('Dashboard', { user });
+        }, 1500);
       } else {
-        Alert.alert('Booking Failed', response.data.message || 'Unable to create booking. Please try again.');
+        showToast('❌ ' + (response.data.message || 'Unable to create booking. Please try again.'), 'error');
       }
     } catch (error) {
       console.error('Booking error:', error);
-      Alert.alert(
-        'Error',
-        error.response?.data?.message || 'Failed to create booking. Please check your connection and try again.'
+      showToast(
+        '❌ ' + (error.response?.data?.message || 'Failed to create booking. Please check your connection and try again.'),
+        'error'
       );
     } finally {
       setLoading(false);
@@ -209,6 +219,21 @@ export default function PaymentMethodScreen({ route, navigation }) {
 
           <View style={styles.spacer} />
         </ScrollView>
+
+        {/* Toast Notification */}
+        {toast.visible && (
+          <Animated.View 
+            style={[
+              styles.toastContainer, 
+              { 
+                opacity: toastOpacity,
+                backgroundColor: toast.type === 'success' ? '#10B981' : '#EF4444'
+              }
+            ]}
+          >
+            <Text style={styles.toastText}>{toast.message}</Text>
+          </Animated.View>
+        )}
       </LinearGradient>
     </View>
   );
@@ -361,5 +386,28 @@ const styles = StyleSheet.create({
   },
   spacer: {
     height: 40,
+  },
+  toastContainer: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    right: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  toastText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
