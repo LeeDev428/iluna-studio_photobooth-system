@@ -8,6 +8,8 @@ import DashboardScreen from './src/screens/DashboardScreen';
 import ServiceSelectionScreen from './src/screens/ServiceSelectionScreen';
 import TimeSlotScreen from './src/screens/TimeSlotScreen';
 import PaymentMethodScreen from './src/screens/PaymentMethodScreen';
+import ReviewsScreen from './src/screens/ReviewsScreen';
+import ChatBoxScreen from './src/screens/ChatBoxScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,8 @@ export default function App() {
         <Stack.Screen name="ServiceSelection" component={ServiceSelectionScreen} />
         <Stack.Screen name="TimeSlot" component={TimeSlotScreen} />
         <Stack.Screen name="PaymentMethod" component={PaymentMethodScreen} />
+        <Stack.Screen name="Reviews" component={ReviewsScreen} />
+        <Stack.Screen name="ChatBox" component={ChatBoxScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
