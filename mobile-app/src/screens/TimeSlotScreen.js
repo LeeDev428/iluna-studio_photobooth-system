@@ -12,40 +12,72 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TimeSlotScreen({ route, navigation }) {
   const { selectedDate, user, serviceType } = route.params;
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [hour, setHour] = useState(9);
+  const [minute, setMinute] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(null);
 
   // Get day of week from selected date
   const dayOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THURS', 'FRI', 'SAT'][selectedDate.getDay()];
-  
-  const timeSlots = [
-    '9-10 AM', '10-11 AM', '11-12 NN', '12-1 PM', '1-2 PM',  '2-3 PM',
-    '3-4 PM', '4-5 PM', '5-6 PM', '6-7 PM', '7-8 PM', '8-9 PM'
-  ];
 
-  // Duration based on service type
-  const getDurations = () => {
+  // Duration based on service type with pricing
+  const getDurationsWithPrices = () => {
     if (serviceType === 'wedding') {
-      return ['8hr'];
+      return [{ value: '8hr', label: '8 hours', price: '₱5,000' }];
     } else if (serviceType === 'photobooth' || serviceType === 'birthday') {
-      return ['20', '30', '1hr'];
+      return [
+        { value: '20', label: '20 mins', price: '₱250' },
+        { value: '30', label: '30 mins', price: '₱350' },
+        { value: '1hr', label: '1 hour', price: '₱650' }
+      ];
     } else if (serviceType === 'selfphoto') {
-      return ['30', '1hr'];
+      return [
+        { value: '30', label: '30 mins', price: '₱350' },
+        { value: '1hr', label: '1 hour', price: '₱650' }
+      ];
     }
-    return ['20', '30', '1hr'];
+    return [
+      { value: '20', label: '20 mins', price: '₱250' },
+      { value: '30', label: '30 mins', price: '₱350' },
+      { value: '1hr', label: '1 hour', price: '₱650' }
+    ];
   };
 
-  const durations = getDurations();
+  const durationsWithPrices = getDurationsWithPrices();
+
+  const incrementHour = () => {
+    if (hour < 21) setHour(hour + 1);
+  };
+
+  const decrementHour = () => {
+    if (hour > 9) setHour(hour - 1);
+  };
+
+  const incrementMinute = () => {
+    setMinute((minute + 10) % 60);
+  };
+
+  const decrementMinute = () => {
+    setMinute((minute - 10 + 60) % 60);
+  };
+
+  const formatTime = () => {
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+    const displayMinute = minute.toString().padStart(2, '0');
+    return `${displayHour}:${displayMinute} ${period}`;
+  };
 
   const handleBackPress = () => {
     navigation.goBack();
   };
 
   const handleProceedToPayment = () => {
-    if (!selectedTime || !selectedDuration) {
-      Alert.alert('Incomplete Selection', 'Please select time and duration.');
+    if (!selectedDuration) {
+      Alert.alert('Incomplete Selection', 'Please select duration.');
       return;
     }
+
+    const selectedTime = formatTime();
 
     // Navigate to Payment Method screen
     navigation.navigate('PaymentMethod', {
@@ -87,50 +119,80 @@ export default function TimeSlotScreen({ route, navigation }) {
             <Text style={styles.dayText}>Day: {dayOfWeek}</Text>
           </View>
 
-          {/* Time Slots Grid */}
-          <View style={styles.sectionContainer}>
-            <View style={styles.timeSlotsGrid}>
-              {timeSlots.map((time, index) => (
+          {/* Custom Time Picker */}
+          <View style={styles.timePickerSection}>
+            <Text style={styles.sectionTitle}>Select Time</Text>
+            <View style={styles.timePickerContainer}>
+              {/* Hour Picker */}
+              <View style={styles.timePickerColumn}>
+                <Text style={styles.pickerLabel}>Hour</Text>
+                <View style={styles.pickerControls}>
+                  <TouchableOpacity style={styles.pickerButton} onPress={incrementHour}>
+                    <Text style={styles.pickerButtonText}>+</Text>
+                  </TouchableOpacity>
+                  <View style={styles.pickerValue}>
+                    <Text style={styles.pickerValueText}>{hour.toString().padStart(2, '0')}</Text>
+                  </View>
+                  <TouchableOpacity style={styles.pickerButton} onPress={decrementHour}>
+                    <Text style={styles.pickerButtonText}>−</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <Text style={styles.timeSeparator}>:</Text>
+
+              {/* Minute Picker */}
+              <View style={styles.timePickerColumn}>
+                <Text style={styles.pickerLabel}>Minute</Text>
+                <View style={styles.pickerControls}>
+                  <TouchableOpacity style={styles.pickerButton} onPress={incrementMinute}>
+                    <Text style={styles.pickerButtonText}>+</Text>
+                  </TouchableOpacity>
+                  <View style={styles.pickerValue}>
+                    <Text style={styles.pickerValueText}>{minute.toString().padStart(2, '0')}</Text>
+                  </View>
+                  <TouchableOpacity style={styles.pickerButton} onPress={decrementMinute}>
+                    <Text style={styles.pickerButtonText}>−</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            {/* Display Selected Time */}
+            <View style={styles.selectedTimeDisplay}>
+              <Text style={styles.selectedTimeText}>{formatTime()}</Text>
+            </View>
+          </View>
+
+          {/* Duration Selection with Pricing */}
+          <View style={styles.durationSection}>
+            <Text style={styles.sectionTitle}>Select Duration & Price</Text>
+            <View style={styles.durationContainer}>
+              {durationsWithPrices.map((item, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
-                    styles.timeSlotButton,
-                    selectedTime === time && styles.selectedButton,
+                    styles.durationButton,
+                    selectedDuration === item.value && styles.selectedDurationButton,
                   ]}
-                  onPress={() => setSelectedTime(time)}
+                  onPress={() => setSelectedDuration(item.value)}
                   activeOpacity={0.7}
                 >
                   <Text style={[
-                    styles.timeSlotText,
-                    selectedTime === time && styles.selectedButtonText,
+                    styles.durationLabel,
+                    selectedDuration === item.value && styles.selectedDurationLabel,
                   ]}>
-                    {time}
+                    {item.label}
+                  </Text>
+                  <Text style={[
+                    styles.durationPrice,
+                    selectedDuration === item.value && styles.selectedDurationPrice,
+                  ]}>
+                    {item.price}
                   </Text>
                 </TouchableOpacity>
               ))}
             </View>
-          </View>
-
-          {/* Duration Selection - Horizontal */}
-          <View style={styles.durationContainer}>
-            {durations.map((duration, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.durationButton,
-                  selectedDuration === duration && styles.selectedDurationButton,
-                ]}
-                onPress={() => setSelectedDuration(duration)}
-                activeOpacity={0.7}
-              >
-                <Text style={[
-                  styles.durationText,
-                  selectedDuration === duration && styles.selectedDurationText,
-                ]}>
-                  {duration}
-                </Text>
-              </TouchableOpacity>
-            ))}
           </View>
 
           {/* Proceed Button */}
@@ -139,7 +201,7 @@ export default function TimeSlotScreen({ route, navigation }) {
             onPress={handleProceedToPayment}
             activeOpacity={0.8}
           >
-            <Text style={styles.proceedButtonText}>click for the payment method</Text>
+            <Text style={styles.proceedButtonText}>Proceed to Payment</Text>
           </TouchableOpacity>
 
           <View style={styles.spacer} />
@@ -178,7 +240,7 @@ const styles = StyleSheet.create({
   },
   dateDisplay: {
     marginTop: 100,
-    marginBottom: 20,
+    marginBottom: 30,
     paddingHorizontal: 20,
   },
   dateText: {
@@ -187,29 +249,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     textAlign: 'center',
   },
-  sectionContainer: {
-    paddingHorizontal: 15,
-    marginBottom: 15,
-  },
-  weekDaysGrid: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 12,
-    padding: 10,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  weekDayButton: {
-    width: '13%',
-    aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#E0E0E0',
-    marginBottom: 8,
-  },
   dayText: {
     fontSize: 16,
     fontWeight: '600',
@@ -217,82 +256,145 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 5,
   },
-  weekDayButtonText: {
-    fontSize: 11,
-    fontWeight: 'bold',
-    color: '#333333',
-  },
-  timeSlotsGrid: {
+  timePickerSection: {
+    marginHorizontal: 20,
+    marginBottom: 25,
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 12,
-    padding: 10,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    borderRadius: 15,
+    padding: 20,
   },
-  timeSlotButton: {
-    width: '15.5%',
-    aspectRatio: 1,
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#0D9488',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  timePickerContainer: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#E0E0E0',
-    marginBottom: 8,
   },
-  timeSlotText: {
-    fontSize: 10,
+  timePickerColumn: {
+    alignItems: 'center',
+  },
+  pickerLabel: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 10,
     fontWeight: '600',
-    color: '#333333',
-    textAlign: 'center',
   },
-  selectedButton: {
+  pickerControls: {
+    alignItems: 'center',
+  },
+  pickerButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: '#0D9488',
-    borderColor: '#0F766E',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 8,
   },
-  selectedButtonText: {
+  pickerButtonText: {
+    fontSize: 24,
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  durationContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  durationButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 20,
+  pickerValue: {
+    width: 70,
+    height: 70,
+    borderRadius: 10,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#E0E0E0',
-  },
-  selectedDurationButton: {
-    backgroundColor: '#14B8A6',
     borderColor: '#0D9488',
   },
-  durationText: {
+  pickerValueText: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#0D9488',
+  },
+  timeSeparator: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: '#0D9488',
+    marginHorizontal: 15,
+    marginTop: 35,
+  },
+  selectedTimeDisplay: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#0D9488',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  selectedTimeText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  durationSection: {
+    marginHorizontal: 20,
+    marginBottom: 25,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 15,
+    padding: 20,
+  },
+  durationContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  durationButton: {
+    width: '45%',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  selectedDurationButton: {
+    backgroundColor: '#0D9488',
+    borderColor: '#0D9488',
+  },
+  durationLabel: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333333',
+    marginBottom: 5,
   },
-  selectedDurationText: {
+  selectedDurationLabel: {
+    color: '#FFFFFF',
+  },
+  durationPrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#0D9488',
+  },
+  selectedDurationPrice: {
     color: '#FFFFFF',
   },
   proceedButton: {
     marginHorizontal: 30,
     marginTop: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    paddingVertical: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    paddingVertical: 18,
     borderRadius: 25,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   proceedButtonText: {
     color: '#0D9488',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   spacer: {
