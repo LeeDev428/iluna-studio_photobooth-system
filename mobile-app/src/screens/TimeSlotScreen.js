@@ -28,12 +28,11 @@ export default function TimeSlotScreen({ route, navigation }) {
     if (serviceType === 'wedding') {
       return ['8hr'];
     } else if (serviceType === 'photobooth' || serviceType === 'birthday') {
-      return ['10', '20', '30', '1hr'];
+      return ['20', '30', '1hr'];
     } else if (serviceType === 'selfphoto') {
-      // For self photo - different options (you can customize this)
       return ['30', '1hr'];
     }
-    return ['10', '20', '30', '1hr'];
+    return ['20', '30', '1hr'];
   };
 
   const durations = getDurations();
