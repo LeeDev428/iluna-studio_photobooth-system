@@ -102,7 +102,7 @@ try {
         http_response_code(400);
         echo json_encode([
             "success" => false,
-            "message" => "You already have an active booking. You can only book once."
+            "message" => "⚠️ You already have a booking. Only one booking is allowed per user."
         ]);
         exit();
     }
@@ -124,7 +124,7 @@ try {
         http_response_code(400);
         echo json_encode([
             "success" => false,
-            "message" => "This time slot overlaps with an existing booking. Please choose another time."
+            "message" => "⚠️ This date and time slot is already booked. Please choose another time."
         ]);
         exit();
     }
