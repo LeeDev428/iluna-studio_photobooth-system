@@ -188,22 +188,42 @@ export default function AdminChatScreen({ route, navigation }) {
         <View style={styles.bottomNav}>
           <TouchableOpacity 
             style={styles.navItem}
-            onPress={() => navigation.navigate('AdminDashboard', { user })}
+            onPress={() => navigation.navigate('AdminHome', { user })}
           >
             <View style={styles.iconContainer}>
-              <Text style={styles.iconText}>📊</Text>
+              <Text style={styles.iconText}>🏠</Text>
+            </View>
+            <Text style={styles.navLabel}>Home</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.navItem}
+            onPress={() => navigation.navigate('AdminBookings', { user })}
+          >
+            <View style={styles.iconContainer}>
+              <Text style={styles.iconText}>📋</Text>
             </View>
             <Text style={styles.navLabel}>Bookings</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
             style={styles.navItem}
-            onPress={() => navigation.navigate('AdminChat', { user })}
+            onPress={() => navigation.navigate('AdminHistory', { user })}
           >
             <View style={styles.iconContainer}>
+              <Text style={styles.iconText}>📚</Text>
+            </View>
+            <Text style={styles.navLabel}>History</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.navItem}
+            onPress={() => navigation.navigate('AdminChat', { user })}
+          >
+            <View style={[styles.iconContainer, styles.activeIcon]}>
               <Text style={styles.iconText}>💬</Text>
             </View>
-            <Text style={styles.navLabel}>Messages</Text>
+            <Text style={[styles.navLabel, styles.activeLabel]}>Messages</Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -409,13 +429,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
+  activeIcon: {
+    backgroundColor: '#FFFFFF',
+  },
   iconText: {
     fontSize: 24,
   },
   navLabel: {
     fontSize: 11,
-    color: '#FFF',
+    color: 'rgba(255, 255, 255, 0.8)',
     fontWeight: '500',
     textAlign: 'center',
+  },
+  activeLabel: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
 });
