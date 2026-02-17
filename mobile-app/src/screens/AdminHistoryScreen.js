@@ -15,22 +15,15 @@ export default function AdminHistoryScreen({ route, navigation }) {
   const user = route.params?.user || {};
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState('all'); // all, completed, cancelled
 
   useEffect(() => {
     loadHistory();
-  }, [filter]);
+  }, []);
 
   const loadHistory = async () => {
     setLoading(true);
     try {
-      let url = '/admin/get_bookings.php?history=true';
-      
-      if (filter === 'completed') {
-        url += '&status=completed';
-      } else if (filter === 'cancelled') {
-        url += '&status=cancelled';
-      }
+      const url = '/admin/get_bookings.php?history=true';
 
       const response = await api.get(url);
       if (response.data.success) {
@@ -40,16 +33,6 @@ export default function AdminHistoryScreen({ route, navigation }) {
       console.error('Error loading history:', error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch(status) {
-      case 'pending': return '#F59E0B';
-      case 'confirmed': return '#10B981';
-      case 'cancelled': return '#EF4444';
-      case 'completed': return '#3B82F6';
-      default: return '#6B7280';
     }
   };
 
@@ -64,13 +47,11 @@ export default function AdminHistoryScreen({ route, navigation }) {
   const calculateTotalRevenue = () => {
     let total = 0;
     bookings.forEach(booking => {
-      if (booking.status === 'completed') {
-        const duration = booking.duration;
-        if (duration === '20') total += 250;
-        else if (duration === '30') total += 350;
-        else if (duration === '1hr') total += 650;
-        else if (duration === '8hr') total += 5000;
-      }
+      const duration = booking.duration;
+      if (duration === '20') total += 250;
+      else if (duration === '30') total += 350;
+      else if (duration === '1hr') total += 650;
+      else if (duration === '8hr') total += 5000;
     });
     return total;
   };
@@ -87,39 +68,9 @@ export default function AdminHistoryScreen({ route, navigation }) {
         </View>
 
         {/* Revenue Display */}
-        {filter === 'all' || filter === 'completed' ? (
-          <View style={styles.revenueCard}>
-            <Text style={styles.revenueLabel}>Total Revenue (Completed)</Text>
-            <Text style={styles.revenueValue}>₱{calculateTotalRevenue().toLocaleString()}</Text>
-          </View>
-        ) : null}
-
-        {/* Filter Tabs */}
-        <View style={styles.filterContainer}>
-          <TouchableOpacity
-            style={[styles.filterTab, filter === 'all' && styles.activeTab]}
-            onPress={() => setFilter('all')}
-          >
-            <Text style={[styles.filterText, filter === 'all' && styles.activeFilterText]}>
-              All
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.filterTab, filter === 'completed' && styles.activeTab]}
-            onPress={() => setFilter('completed')}
-          >
-            <Text style={[styles.filterText, filter === 'completed' && styles.activeFilterText]}>
-              Completed
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.filterTab, filter === 'cancelled' && styles.activeTab]}
-            onPress={() => setFilter('cancelled')}
-          >
-            <Text style={[styles.filterText, filter === 'cancelled' && styles.activeFilterText]}>
-              Cancelled
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.revenueCard}>
+          <Text style={styles.revenueLabel}>Total Revenue</Text>
+          <Text style={styles.revenueValue}>₱{calculateTotalRevenue().toLocaleString()}</Text>
         </View>
 
         {/* History List */}
@@ -140,9 +91,6 @@ export default function AdminHistoryScreen({ route, navigation }) {
                   <View>
                     <Text style={styles.customerName}>{booking.user_name}</Text>
                     <Text style={styles.customerContact}>📞 {booking.user_contact}</Text>
-                  </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(booking.status) }]}>
-                    <Text style={styles.statusText}>{booking.status}</Text>
                   </View>
                 </View>
 
