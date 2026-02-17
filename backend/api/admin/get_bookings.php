@@ -18,7 +18,6 @@ $db = $database->getConnection();
 
 // Get filter parameters
 $date = isset($_GET['date']) ? $_GET['date'] : null;
-$status = isset($_GET['status']) ? $_GET['status'] : null;
 $service_type = isset($_GET['service_type']) ? $_GET['service_type'] : null;
 $is_history = isset($_GET['history']) && $_GET['history'] === 'true';
 
@@ -40,12 +39,6 @@ try {
     } else {
         // Default to today
         $conditions[] = "b.booking_date = CURDATE()";
-    }
-    
-    // Filter by status
-    if ($status) {
-        $conditions[] = "b.status = :status";
-        $params[':status'] = $status;
     }
     
     // Filter by service type
