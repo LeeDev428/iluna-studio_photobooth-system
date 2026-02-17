@@ -260,31 +260,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
   },
-  filterContainer: {
-    flexDirection: 'row',
-    marginHorizontal: 15,
-    marginBottom: 15,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 15,
-    padding: 5,
-  },
-  filterTab: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
-    borderRadius: 12,
-  },
-  activeTab: {
-    backgroundColor: '#FFFFFF',
-  },
-  filterText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: 'rgba(255, 255, 255, 0.8)',
-  },
-  activeFilterText: {
-    color: '#0D9488',
-  },
   scrollView: {
     flex: 1,
     paddingHorizontal: 15,
