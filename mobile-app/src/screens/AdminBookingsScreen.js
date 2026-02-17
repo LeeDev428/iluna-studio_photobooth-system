@@ -17,23 +17,16 @@ export default function AdminBookingsScreen({ route, navigation }) {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [filter, setFilter] = useState('all'); // all, pending, confirmed
 
   useEffect(() => {
     loadBookings();
-  }, [selectedDate, filter]);
+  }, [selectedDate]);
 
   const loadBookings = async () => {
     setLoading(true);
     try {
       const dateStr = selectedDate.toISOString().split('T')[0];
-      let url = `/admin/get_bookings.php?date=${dateStr}`;
-      
-      if (filter === 'pending') {
-        url += '&status=pending';
-      } else if (filter === 'confirmed') {
-        url += '&status=confirmed';
-      }
+      const url = `/admin/get_bookings.php?date=${dateStr}`;
 
       const response = await api.get(url);
       if (response.data.success) {
@@ -46,25 +39,6 @@ export default function AdminBookingsScreen({ route, navigation }) {
     }
   };
 
-  const updateBookingStatus = async (bookingId, status) => {
-    try {
-      const response = await api.post('/admin/update_booking_status.php', {
-        booking_id: bookingId,
-        status: status
-      });
-
-      if (response.data.success) {
-        Alert.alert('Success', `Booking ${status} successfully`);
-        loadBookings();
-      } else {
-        Alert.alert('Error', response.data.message);
-      }
-    } catch (error) {
-      console.error('Error updating booking:', error);
-      Alert.alert('Error', 'Failed to update booking status');
-    }
-  };
-
   const changeDate = (days) => {
     const newDate = new Date(selectedDate);
     newDate.setDate(newDate.getDate() + days);
@@ -73,16 +47,6 @@ export default function AdminBookingsScreen({ route, navigation }) {
 
   const goToToday = () => {
     setSelectedDate(new Date());
-  };
-
-  const getStatusColor = (status) => {
-    switch(status) {
-      case 'pending': return '#F59E0B';
-      case 'confirmed': return '#10B981';
-      case 'cancelled': return '#EF4444';
-      case 'completed': return '#3B82F6';
-      default: return '#6B7280';
-    }
   };
 
   const getPriceByDuration = (duration) => {
@@ -133,34 +97,6 @@ export default function AdminBookingsScreen({ route, navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Filter Tabs */}
-        <View style={styles.filterContainer}>
-          <TouchableOpacity
-            style={[styles.filterTab, filter === 'all' && styles.activeTab]}
-            onPress={() => setFilter('all')}
-          >
-            <Text style={[styles.filterText, filter === 'all' && styles.activeFilterText]}>
-              All
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.filterTab, filter === 'pending' && styles.activeTab]}
-            onPress={() => setFilter('pending')}
-          >
-            <Text style={[styles.filterText, filter === 'pending' && styles.activeFilterText]}>
-              Pending
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.filterTab, filter === 'confirmed' && styles.activeTab]}
-            onPress={() => setFilter('confirmed')}
-          >
-            <Text style={[styles.filterText, filter === 'confirmed' && styles.activeFilterText]}>
-              Confirmed
-            </Text>
-          </TouchableOpacity>
-        </View>
-
         {/* Bookings List */}
         <ScrollView 
           style={styles.scrollView}
@@ -179,9 +115,6 @@ export default function AdminBookingsScreen({ route, navigation }) {
                   <View>
                     <Text style={styles.customerName}>{booking.user_name}</Text>
                     <Text style={styles.customerContact}>📞 {booking.user_contact}</Text>
-                  </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(booking.status) }]}>
-                    <Text style={styles.statusText}>{booking.status}</Text>
                   </View>
                 </View>
 
@@ -213,40 +146,6 @@ export default function AdminBookingsScreen({ route, navigation }) {
                     <Text style={styles.detailValue}>{booking.payment_method}</Text>
                   </View>
                 </View>
-
-                {/* Action Buttons */}
-                {booking.status === 'pending' && (
-                  <View style={styles.actionButtons}>
-                    <TouchableOpacity
-                      style={[styles.actionBtn, styles.confirmBtn]}
-                      onPress={() => updateBookingStatus(booking.id, 'confirmed')}
-                    >
-                      <Text style={styles.actionBtnText}>✓ Confirm</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.actionBtn, styles.cancelBtn]}
-                      onPress={() => updateBookingStatus(booking.id, 'cancelled')}
-                    >
-                      <Text style={styles.actionBtnText}>✕ Cancel</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                {booking.status === 'confirmed' && (
-                  <View style={styles.actionButtons}>
-                    <TouchableOpacity
-                      style={[styles.actionBtn, styles.completeBtn]}
-                      onPress={() => updateBookingStatus(booking.id, 'completed')}
-                    >
-                      <Text style={styles.actionBtnText}>✓ Complete</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.actionBtn, styles.cancelBtn]}
-                      onPress={() => updateBookingStatus(booking.id, 'cancelled')}
-                    >
-                      <Text style={styles.actionBtnText}>✕ Cancel</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
               </View>
             ))
           )}
