@@ -46,7 +46,7 @@ export default function SignInScreen({ navigation }) {
         // Navigate based on user role
         const user = response.data.user;
         if (user.role === 'admin') {
-          navigation.replace('AdminDashboard', { user });
+          navigation.replace('AdminHome', { user });
         } else {
           navigation.replace('Dashboard', { user });
         }
