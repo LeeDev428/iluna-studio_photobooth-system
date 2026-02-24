@@ -59,7 +59,7 @@ export default function AdminHomeScreen({ route, navigation }) {
             <Text style={styles.headerSubtitle}>Admin Panel</Text>
           </View>
           <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-            <Text style={styles.logoutText}>Logout</Text>
+            <Text style={styles.logoutText}>⏻ Logout</Text>
           </TouchableOpacity>
         </View>
 
@@ -190,14 +190,20 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.8)',
   },
   logoutBtn: {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    paddingHorizontal: 15,
-    paddingVertical: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 16,
+    paddingVertical: 9,
     borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 4,
   },
   logoutText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
+    color: '#EF4444',
+    fontWeight: '700',
+    fontSize: 13,
   },
   scrollView: {
     flex: 1,
