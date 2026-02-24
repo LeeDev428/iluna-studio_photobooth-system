@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import api from '../config/api';
@@ -108,6 +109,11 @@ export default function RegisterScreen({ navigation }) {
           >
             {/* Header */}
             <View style={styles.headerContainer}>
+              <Image
+                source={require('../../assets/logo/illunaicon.png')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
               <Text style={styles.headerTitle}>Register</Text>
               <Text style={styles.headerSubtitle}>Create your account</Text>
             </View>
@@ -255,6 +261,11 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     marginBottom: 30,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 16,
   },
   headerTitle: {
     fontSize: 36,
