@@ -10,6 +10,7 @@ class User {
     public $email;
     public $contact;
     public $password;
+    public $role;
 
     public function __construct($db) {
         $this->conn = $db;
@@ -46,7 +47,7 @@ class User {
     }
 
     public function emailExists() {
-        $query = "SELECT id, name, email, contact, password
+        $query = "SELECT id, name, email, contact, password, role
                 FROM " . $this->table_name . "
                 WHERE email = :email
                 LIMIT 0,1";
@@ -63,6 +64,7 @@ class User {
             $this->name = $row['name'];
             $this->contact = $row['contact'];
             $this->password = $row['password'];
+            $this->role = $row['role'];
             return true;
         }
 
