@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import api from '../config/api';
@@ -87,6 +88,11 @@ export default function SignInScreen({ navigation }) {
           >
             {/* Header */}
             <View style={styles.headerContainer}>
+              <Image
+                source={require('../../assets/logo/illunaicon.png')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
               <Text style={styles.headerTitle}>Sign In</Text>
               <Text style={styles.headerSubtitle}>Welcome back!</Text>
             </View>
@@ -205,6 +211,11 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     marginBottom: 40,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 16,
   },
   headerTitle: {
     fontSize: 36,
