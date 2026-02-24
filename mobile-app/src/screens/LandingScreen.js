@@ -24,11 +24,13 @@ export default function LandingScreen({ navigation }) {
         >
           <View style={styles.contentContainer}>
             {/* Logo */}
-            <Image
-              source={require('../../assets/logo/illunaicon.png')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../../assets/logo/illunaicon.png')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
+            </View>
 
             {/* Title */}
             <View style={styles.titleContainer}>
@@ -71,10 +73,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 30,
   },
+  logoContainer: {
+    width: 190,
+    height: 190,
+    borderRadius: 95,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 35,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 10,
+  },
   logo: {
-    width: 160,
-    height: 160,
-    marginBottom: 30,
+    width: 155,
+    height: 155,
   },
   titleContainer: {
     alignItems: 'center',
