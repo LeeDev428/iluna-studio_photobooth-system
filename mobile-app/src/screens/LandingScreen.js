@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Dimensions,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -16,20 +17,18 @@ export default function LandingScreen({ navigation }) {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       
-      {/* Background with gradient - ImageBackground removed until you add landing-bg.jpg */}
       <View style={styles.background}>
-        {/* Gradient Overlay */}
         <LinearGradient
           colors={['#0D9488', '#14B8A6']}
           style={styles.overlay}
         >
-          {/* Main content */}
           <View style={styles.contentContainer}>
-            {/* Logo/Brand text with "ILLUNA STUDIO" watermark effect */}
-            <View style={styles.watermarkContainer}>
-              <Text style={styles.watermarkText}>ILLUNA</Text>
-              <Text style={styles.watermarkText}>STUDIO</Text>
-            </View>
+            {/* Logo */}
+            <Image
+              source={require('../../assets/logo/illunaicon.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
 
             {/* Title */}
             <View style={styles.titleContainer}>
@@ -71,19 +70,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 30,
-    position: 'relative',
   },
-  watermarkContainer: {
-    position: 'absolute',
-    top: '25%',
-    alignItems: 'center',
-    opacity: 0.15,
-  },
-  watermarkText: {
-    fontSize: 60,
-    fontWeight: '900',
-    color: '#FFFFFF',
-    letterSpacing: 8,
+  logo: {
+    width: 160,
+    height: 160,
+    marginBottom: 30,
   },
   titleContainer: {
     alignItems: 'center',
