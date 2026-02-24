@@ -88,11 +88,13 @@ export default function SignInScreen({ navigation }) {
           >
             {/* Header */}
             <View style={styles.headerContainer}>
-              <Image
-                source={require('../../assets/logo/illunaicon.png')}
-                style={styles.logo}
-                resizeMode="contain"
-              />
+              <View style={styles.logoContainer}>
+                <Image
+                  source={require('../../assets/logo/illunaicon.png')}
+                  style={styles.logo}
+                  resizeMode="contain"
+                />
+              </View>
               <Text style={styles.headerTitle}>Sign In</Text>
               <Text style={styles.headerSubtitle}>Welcome back!</Text>
             </View>
@@ -212,10 +214,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 40,
   },
+  logoContainer: {
+    width: 130,
+    height: 130,
+    borderRadius: 65,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 10,
+  },
   logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 16,
+    width: 105,
+    height: 105,
   },
   headerTitle: {
     fontSize: 36,
