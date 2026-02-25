@@ -49,7 +49,7 @@ export default function SignInScreen({ navigation }) {
         if (user.role === 'admin') {
           navigation.replace('AdminHome', { user });
         } else {
-          navigation.replace('Dashboard', { user });
+          navigation.replace('CustomerHome', { user });
         }
       } else {
         setError(response.data.message || 'Sign in failed');
