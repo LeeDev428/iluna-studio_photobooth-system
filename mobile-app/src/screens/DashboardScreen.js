@@ -164,7 +164,16 @@ export default function DashboardScreen({ route, navigation }) {
         colors={['#0D9488', '#14B8A6']}
         style={styles.gradient}
       >
-        {/* Logout Button - Top Right */}
+        {/* Back Button - Top Left */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CustomerHome', { user })}
+          style={styles.backButton}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.backIcon}>‹</Text>
+        </TouchableOpacity>
+
+        {/* Logout Button - Top Right */}}
         <TouchableOpacity 
           onPress={handleLogout} 
           style={styles.logoutButton}
@@ -300,6 +309,32 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 45,
+    left: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    zIndex: 1000,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  backIcon: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '300',
+    lineHeight: 32,
+    marginTop: -2,
   },
   logoutButton: {
     position: 'absolute',
