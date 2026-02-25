@@ -10,6 +10,7 @@ import TimeSlotScreen from './src/screens/TimeSlotScreen';
 import PaymentMethodScreen from './src/screens/PaymentMethodScreen';
 import ReviewsScreen from './src/screens/ReviewsScreen';
 import ChatBoxScreen from './src/screens/ChatBoxScreen';
+import CustomerHomeScreen from './src/screens/CustomerHomeScreen';
 import AdminHomeScreen from './src/screens/AdminHomeScreen';
 import AdminBookingsScreen from './src/screens/AdminBookingsScreen';
 import AdminHistoryScreen from './src/screens/AdminHistoryScreen';
@@ -29,6 +30,7 @@ export default function App() {
         <Stack.Screen name="Landing" component={LandingScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="CustomerHome" component={CustomerHomeScreen} />
         <Stack.Screen name="Dashboard" component={DashboardScreen} />
         <Stack.Screen name="ServiceSelection" component={ServiceSelectionScreen} />
         <Stack.Screen name="TimeSlot" component={TimeSlotScreen} />
