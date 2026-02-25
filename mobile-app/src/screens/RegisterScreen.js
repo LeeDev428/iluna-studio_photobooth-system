@@ -71,7 +71,7 @@ export default function RegisterScreen({ navigation }) {
       
       if (response.data.success) {
         // Navigate directly to dashboard after successful registration
-        navigation.replace('Dashboard', { user: response.data.user });
+        navigation.replace('CustomerHome', { user: response.data.user });
       } else {
         setError(response.data.message || 'Registration failed');
       }
