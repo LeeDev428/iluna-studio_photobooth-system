@@ -8,6 +8,7 @@ import {
   ScrollView,
   RefreshControl,
   Alert,
+  Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import api from '../config/api';
@@ -37,14 +38,23 @@ export default function AdminHomeScreen({ route, navigation }) {
   };
 
   const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Logout', onPress: () => navigation.replace('Landing'), style: 'destructive' }
-      ]
-    );
+    const doLogout = () =>
+      navigation.reset({ index: 0, routes: [{ name: 'Landing' }] });
+
+    if (Platform.OS === 'web') {
+      if (window.confirm('Are you sure you want to logout?')) {
+        doLogout();
+      }
+    } else {
+      Alert.alert(
+        'Logout',
+        'Are you sure you want to logout?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Logout', style: 'destructive', onPress: doLogout },
+        ]
+      );
+    }
   };
 
   return (
